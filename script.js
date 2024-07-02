@@ -19,8 +19,6 @@ class ToDoList {
         this.date = new Date();
         this.taskOrder = 0;
         
-        /* this.addTaskButton.style.left = document.documentElement.clientWidth / 2 - this.addTaskButton.clientWidth / 2 + 'px'; */
-        /* this.addTaskButton.style.top = document.documentElement.clientHeight / 1.25 + 'px';  */
         this.taskContainer.style.top = this.dateBar.clientHeight + 'px';
         this.dateNode.innerHTML = `${this.weekDays[this.date.getDay()]}, ${this.months[this.date.getMonth()]} ${this.date.getDate()}`;
         
