@@ -45,22 +45,24 @@ body {
     display: flex;
     position: relative;
     flex-direction: column;
+    align-self: center;
     font-size: 30px;
     height: 100%;
-    width: 100%;
 }
 
 .task-list,
 .completed-task-list {
+    position: relative;
     list-style-type: none;
+    padding: 0;
 }
 
 .task-list li,
 .completed-task-list li {
     display: flex;
-    margin: 0.4em;
     gap: 0.3em;
     align-items: center;
+    padding: 0.25em;
 }
 
 .completed-task-list li {
@@ -68,21 +70,35 @@ body {
 }
 
 .title-completed {
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: start;
-}
-
-.title-completed h5 {
     font-weight: 500;
     font-size: 3rem;
-    margin: 0px 0px 30px 0px;
+    margin: 0 0 2rem 2.5rem;
+}
+
+.cross {
+    opacity: 0;
+    width: 0.8em;
+    height: 0.8em;
+
 }
 
 .check-box {
     width: 1em;
     height: 1em;
+}
+
+li:hover :last-child,
+li:hover {
+    background-color: var(--nav-color);
+}
+
+li:hover .cross {
+    opacity: 0.5;
+}
+
+.cross:hover :first-child {
+    stroke: rgb(194, 62, 62);
+    stroke-width: 4;
 }
 
 input {
@@ -97,9 +113,11 @@ input {
     font-weight: 500;
 }
 
-.previous-button,
-.next-button {
+.arrow-left,
+.arrow-right {
     position: absolute;
+    width: 5rem;
+    height: 5rem;
     padding: 3px 5px;
     background: none;
     border: none;
@@ -108,24 +126,29 @@ input {
     z-index: 2;
 } 
 
-.previous-button {
+.arrow-left {
     left: 2em;
 }
 
-.next-button {
+.arrow-right {
     right: 2em;
 }
 
 .add-task-button {
     background-color: var(--nav-color);
     position: fixed;
-    padding: 1rem 1.18rem; 
+    padding: 1.2rem;
+    width: 5rem; 
+    height: 5rem;
     border: none;
     border-radius: 50%;
-    left: 46%;
     top: 80%;
     cursor: pointer;
     z-index: 2;
+}
+
+.add-task-button :first-child {
+    stroke: var(--font-color);
 }
 
 img {
