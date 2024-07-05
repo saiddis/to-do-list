@@ -17,18 +17,21 @@ or replace with an existing .task-container element if the map has the new date 
         this.completedTaskList = this.taskContainer.lastElementChild;
         this.addTaskButton = document.querySelector('.add-task-button');
         this.dateBar = document.querySelector('.date-bar');
-        this.dateNode = document.querySelector('.date');
-        this.titleCompleted = document.querySelector('.title-completed');
+        this.dateNode = this.dateBar.querySelector('.date');
+        this.titleCompleted = this.completedTaskList.querySelector('.title-completed');
+        this.themeSwitcher = document.querySelector('.theme-switcher');
+        this.moonIcon = this.themeSwitcher.querySelector('.moon-icon');
+        this.sunIcon = this.themeSwitcher.querySelector('.sun-icon')
         this.date = new Date();
         this.taskOrder = 0;
         this.checkBoxIcon = `
         <svg class="check-box" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <rect fill="#f8f9fa" stroke-width="1" stroke="#adb5bd" x="0.5" y="0.5" width="23" height="23" rx="3"/>
+        <rect x="0.5" y="0.5" width="23" height="23" rx="3"/>
         <path class="tick" fill="#212529" d="M19.707,7.293a1,1,0,0,0-1.414,0L10,15.586,6.707,12.293a1,1,0,0,0-1.414,1.414l4,4a1,1,0,0,0,1.414,0l9-9A1,1,0,0,0,19.707,7.293Z"/>
         </svg>`;
-        this.crossSvg = `
-        <svg class="cross" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19 5L5 19M5.00001 5L19 19" stroke="#000000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        this.crossIcon = `
+        <svg class="cross" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 5L5 19M5.00001 5L19 19" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>`;
         
         this.sunIcon.style.display = 'none';
@@ -113,7 +116,9 @@ or replace with an existing .task-container element if the map has the new date 
                 if (previousLi) {
                     previousLi.lastElementChild.focus();
                     setTimeout(() => {
-                        previousLi.lastElementChild.selectionStart = previousLi.lastElementChild.selectionEnd = input.selectionStart;
+                        previousLi.lastElementChild.selectionStart =
+                        previousLi.lastElementChild.selectionEnd =
+                        input.selectionStart;
                     });
                     
                 }
@@ -123,7 +128,9 @@ or replace with an existing .task-container element if the map has the new date 
                 if (nextLi) {
                     nextLi.lastElementChild.focus()
                     setTimeout(() => {
-                        nextLi.lastElementChild.selectionStart = nextLi.lastElementChild.selectionEnd = input.selectionStart;
+                        nextLi.lastElementChild.selectionStart = 
+                        nextLi.lastElementChild.selectionEnd = 
+                        input.selectionStart;
                     });
                 }
                 break;
@@ -139,7 +146,8 @@ or replace with an existing .task-container element if the map has the new date 
             this.date = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate() - 1);
         }
 
-        let newDate = `${this.weekDays[this.date.getDay()]}, ${this.months[this.date.getMonth()]} ${this.date.getDate()}`;
+        let newDate = 
+        `${this.weekDays[this.date.getDay()]}, ${this.months[this.date.getMonth()]} ${this.date.getDate()}`;
 
         if (!this.cachedTaskContainers.has(this.dateNode.textContent)) {
             this.cachedTaskContainers.set(this.dateNode.textContent, this.taskContainer);
@@ -174,8 +182,8 @@ or replace with an existing .task-container element if the map has the new date 
     async addTask() {
         const li = document.createElement('li');
         const input = document.createElement('input');
-        li.insertAdjacentHTML('afterbegin', this.crossSvg);
-        li.insertAdjacentHTML('beforeend', this.checkBoxSvg);
+        li.insertAdjacentHTML('afterbegin', this.crossIcon);
+        li.insertAdjacentHTML('beforeend', this.checkBoxIcon);
         const cross = li.firstElementChild;
         const checkBox = cross.nextElementSibling;
         checkBox.lastElementChild.style.display = 'none';
@@ -221,7 +229,7 @@ or replace with an existing .task-container element if the map has the new date 
             this.completedTaskList.append(li);
 
         } else {
-            checkBox.lastElementChild.style.opacity = '0';
+            checkBox.lastElementChild.style.display = 'none';
             checkBox.nextSibling.style.opacity = '1';
             this.taskList.prepend(li);
             if (this.titleCompleted == this.completedTaskList.lastElementChild) {

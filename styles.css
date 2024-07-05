@@ -17,8 +17,16 @@
     --on-hover: #6c757d; 
 }
 
+:root.dark {
+    --bg: #495057;
+    --button-bg: #343a40;
+    --font-color: #e9ecef;
+    --input-color: #dee2e6;
+    --on-hover: #6c757d; 
+}
+
 html {
-    font-size: 10px;
+    font-size: 12px;
     font-family: var(--font-rubik);
 }
 
@@ -27,8 +35,12 @@ body {
     color: var(--font-color);
 }
 
+h1, h2, h3, h4, h5, h6 {
+    user-select: none;
+}
+
 .date-bar {
-    font-size: 22px;
+    font-size: 24px;
     position: fixed;
     width: 100%;
     height: 2em;
@@ -41,10 +53,31 @@ body {
 }
 
 .date {
-    font-family: var(--font-rubik);
     font-weight: 500;
     position: relative;
     margin: 0;
+}
+
+.arrow-left,
+.arrow-right {
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    padding: 0.1em;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    fill: var(--font-color);
+} 
+
+.arrow-left {
+    left: 1.5em;
+}
+
+.arrow-right {
+    right: 1.5em;
 }
 
 .task-container {
@@ -53,7 +86,6 @@ body {
     flex-direction: column;
     align-self: center;
     font-size: 30px;
-    height: 100%;
 }
 
 .task-list,
@@ -68,7 +100,7 @@ body {
     display: flex;
     gap: 0.3em;
     align-items: center;
-    padding: 0.25em;
+    padding: 0.4em;
 }
 
 .completed-task-list li {
@@ -76,12 +108,13 @@ body {
 }
 
 .title-completed {
-    font-weight: 500;
-    font-size: 3rem;
-    margin: 0 0 2rem 2.5rem;
+    font-weight: 400;
+    font-size: 1em;
+    margin: 0 0 0.5em 1em;
 }
 
 .cross {
+    stroke: var(--font-color);
     opacity: 0;
     width: 0.8em;
     height: 0.8em;
@@ -128,7 +161,7 @@ li:hover {
 }
 
 li:hover .cross {
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .cross:hover :first-child {
@@ -136,48 +169,17 @@ li:hover .cross {
     stroke-width: 4;
 }
 
-input {
-    text-transform: capitalize;
-    color: var(--font-color);
-    background-color: var(--bg);
-    width: 80%;
-    position: relative;
-    font-size: 0.65em;
-    border: none;
-    outline: none;
-    font-weight: 500;
-}
-
-.arrow-left,
-.arrow-right {
-    position: absolute;
-    width: 5rem;
-    height: 5rem;
-    padding: 3px 5px;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 2;
-} 
-
-.arrow-left {
-    left: 2em;
-}
-
-.arrow-right {
-    right: 2em;
-}
-
 .add-task-button {
-    background-color: var(--nav-color);
+    background-color: var(--button-bg);
     position: fixed;
-    padding: 1.2rem;
+    padding: 1rem;
     width: 5rem; 
     height: 5rem;
+    bottom: 4rem;
     border: none;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
+    /* 0 3px 10px 0 rgba(0, 0, 0, 0.19); */
     border-radius: 50%;
-    top: 80%;
     cursor: pointer;
     z-index: 2;
 }
@@ -207,48 +209,27 @@ li:hover input {
     stroke: var(--font-color);
 }
 
-img {
-    max-width: 5rem;
-    height: auto;
-}
-
 @media (max-width: 576px) {
     .date-bar {
-        font-size: 16px;
-        justify-content: space-evenly;
+        font-size: 12px;
     }
 
-    html {
-        font-size: 7px;
-    }
-}
-
-/* Small devices (phones, landscape mode, small tablets) */
-@media (min-width: 576px) and (max-width: 768px) {
-    .date-bar {
-        font-size: 18px;
-    }
-
-    html {
-        font-size: 8px;
-    }
-}
-
-/* Medium devices (tablets, small laptops) */
-@media (min-width: 768px) and (max-width: 992px) {
-    .date-bar {
-        font-size: 20px;
+    .task-container {
+        font-size: 24px;
     }
 
     html {
         font-size: 9px;
-    }    
+    }
 }
 
-/* Large devices (desktops, laptops) */
-@media (min-width: 992px) and (max-width: 1200px) {
+@media (min-width: 576px) and (max-width: 768px) {
     .date-bar {
-        font-size: 22px;
+        font-size: 16px;
+    }
+    
+    .task-container {
+        font-size: 26px;
     }
 
     html {
@@ -256,13 +237,44 @@ img {
     }
 }
 
-/* Extra large devices (large desktops, TVs) */
-@media (min-width: 1200px) {
+@media (min-width: 768px) and (max-width: 992px) {
     .date-bar {
-        font-size: 24px;
+        font-size: 20px;
+    } 
+
+    .task-container {
+        font-size: 28px;
     }
 
     html {
         font-size: 11px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) {
+    .date-bar {
+        font-size: 24px;
+    }
+
+    .task-container {
+        font-size: 30px;
+    }
+
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .date-bar {
+        font-size: 26px;
+    }
+
+    .task-container {
+        font-size: 32px;
+    }
+
+    html {
+        font-size: 13px;
     }
 }
