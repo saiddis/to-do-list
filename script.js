@@ -5,7 +5,10 @@ class ToDoList {
         this.months = ['January', 'February', 'March', 
             'April','May', 'June', 'July', 'August','September',
             'October', 'Novermber', 'December'];
-        this.cachedTaskContainers = new Map();
+        this.cachedTaskContainers = new Map(); /* (key = current .date element's textContent, value = current .task-container element)
+on changing the current date, 
+changeDate() function will put there current .task-container element and create a new one for the new date,
+or replace with an existing .task-container element if the map has the new date as a key */ 
 
         this.arrowLeft = document.querySelector('.arrow-left');
         this.arrowRight = document.querySelector('.arrow-right');
@@ -18,7 +21,7 @@ class ToDoList {
         this.titleCompleted = document.querySelector('.title-completed');
         this.date = new Date();
         this.taskOrder = 0;
-        this.checkBoxSvg = `
+        this.checkBoxIcon = `
         <svg class="check-box" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <rect fill="#f8f9fa" stroke-width="1" stroke="#adb5bd" x="0.5" y="0.5" width="23" height="23" rx="3"/>
         <path class="tick" fill="#212529" d="M19.707,7.293a1,1,0,0,0-1.414,0L10,15.586,6.707,12.293a1,1,0,0,0-1.414,1.414l4,4a1,1,0,0,0,1.414,0l9-9A1,1,0,0,0,19.707,7.293Z"/>
@@ -28,33 +31,56 @@ class ToDoList {
         <path d="M19 5L5 19M5.00001 5L19 19" stroke="#000000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>`;
         
+        this.sunIcon.style.display = 'none';
         this.addTaskButton.style.left = document.documentElement.clientWidth / 2 - this.addTaskButton.clientWidth / 2 + 'px';
-        this.taskContainer.style.top = this.dateBar.clientHeight + 'px';
+        this.taskContainer.style.top = this.dateBar.offsetHeight + 'px';
         this.dateNode.innerHTML = `${this.weekDays[this.date.getDay()]}, ${this.months[this.date.getMonth()]} ${this.date.getDate()}`;
         
         this.addTask = this.addTask.bind(this);
         this.changeDate = this.changeDate.bind(this);
         this.onCheckBox = this.onCheckBox.bind(this);
-        this.inputNavingation = this.inputNavingation.bind(this);
+        this.navigateOnKeydown = this.navigateOnKeydown.bind(this);
 
         this.addTaskButton.onclick = async () => {
-            if (this.taskList.childNodes &&
-                this.taskList.lastElementChild?.lastElementChild.value.trim() == false) {
-                    this.taskList.lastElementChild.lastElementChild.focus();
-                    return false;
+
+            if (this.taskList.childNodes && 
+                this.taskList.lastElementChild?.lastElementChild.value.trim() == false
+            /* checking if there is no tasks with an empty input in the .task-list element */) {
+
+                this.taskList.lastElementChild.lastElementChild.focus(); // refocus on the empty input
+                return false; // prevent the .add-task-button element from adding a new task
             } else {
                 let li = await Promise.resolve(this.addTask());
                 this.taskList.append(li); 
-                li.lastElementChild.focus();
-        
+                li.lastElementChild.focus(); // focus on the added task's input
             }
         };
+
+        this.addTaskButton.onmousedown = () => {
+            this.addTaskButton.classList.add('click');
+        };
+
+        this.addTaskButton.onmouseup = () => {
+            this.addTaskButton.classList.remove('click');
+        };
+
         this.dateBar.onclick = event => {
             this.changeDate(event);
         };
+        this.themeSwitcher.onclick = () => {
+            if (this.sunIcon.style.display == 'none') {
+                this.moonIcon.style.display = 'none';
+                this.sunIcon.style.display = '';
+            } else {
+                this.sunIcon.style.display = 'none';
+                this.moonIcon.style.display = '';
+            }
+
+            document.documentElement.classList.toggle('dark');
+        };
     };
 
-    async inputNavingation(event, input) {
+    async navigateOnKeydown(event, input) {
         
         switch (event.key) {
             case 'Enter':
@@ -115,8 +141,8 @@ class ToDoList {
 
         let newDate = `${this.weekDays[this.date.getDay()]}, ${this.months[this.date.getMonth()]} ${this.date.getDate()}`;
 
-        if (!this.cachedTaskContainers.has(this.dateNode.innerHTML)) {
-            this.cachedTaskContainers.set(this.dateNode.innerHTML, this.taskContainer);
+        if (!this.cachedTaskContainers.has(this.dateNode.textContent)) {
+            this.cachedTaskContainers.set(this.dateNode.textContent, this.taskContainer);
         }
         if (this.cachedTaskContainers.has(newDate)) {
             this.taskContainer.replaceWith(this.cachedTaskContainers.get(newDate));
@@ -142,7 +168,7 @@ class ToDoList {
             this.titleCompleted = newTitleCompleted;
         }
         
-        this.dateNode.innerHTML = newDate;
+        this.dateNode.textContent = newDate;
     };
 
     async addTask() {
@@ -152,17 +178,22 @@ class ToDoList {
         li.insertAdjacentHTML('beforeend', this.checkBoxSvg);
         const cross = li.firstElementChild;
         const checkBox = cross.nextElementSibling;
-        checkBox.lastElementChild.style.opacity = '0';
+        checkBox.lastElementChild.style.display = 'none';
         
         li.append(input);
 
         checkBox.onclick = event => this.onCheckBox(event);
-        input.onkeydown = event => this.inputNavingation(event, input);
+        input.onkeydown = event => this.navigateOnKeydown(event, input);
         cross.onclick = () => {
+            
             if (li.parentElement == this.completedTaskList &&
-                this.completedTaskList.children.length == 2) {
-                this.completedTaskList.hidden = true;
+                this.completedTaskList.children.length == 2
+                /* checking if the last two elements of .completed-task-list is its title and a task */) {
+
+                this.completedTaskList.hidden = true; /* making the .completed-task-list not visible 
+                since the last task in the .completed-task-list is to be removed */
             }
+
             li.remove();
         };
 
@@ -172,20 +203,23 @@ class ToDoList {
     onCheckBox(event) {
         const checkBox = event.target.closest('svg');
 
-        if (!checkBox.nextElementSibling.value.trim()) {
+        if (!checkBox.nextElementSibling.value.trim()) { // if its input is empty
+
             checkBox.nextElementSibling.focus();
-            return false;
+            return false; // prevent from adding the task to the .completed-task-list
         }
 
         const li = checkBox.parentElement;
 
-        if (checkBox.lastElementChild.style.opacity == '0') {
-            checkBox.lastElementChild.style.opacity = '1';
+        if (checkBox.lastElementChild.style.display == 'none') {
+            checkBox.lastElementChild.style.display = '';
             checkBox.nextSibling.style.opacity = '0.3';
             if (this.completedTaskList.hidden) {
                 this.completedTaskList.hidden = false;
             }
+
             this.completedTaskList.append(li);
+
         } else {
             checkBox.lastElementChild.style.opacity = '0';
             checkBox.nextSibling.style.opacity = '1';

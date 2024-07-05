@@ -1,14 +1,20 @@
 :root {
     --bg: #f8f9fa;
-    --font-color: #212529;
-    --nav-color: #e9ecef; 
-
-    /* --bg: #495057;
-    --font-color: #f8f9fa;
-    --nav-color: #343a40; */
+    --button-bg: #dee2e6;
+    --font-color: #343a40;
+    --input-color: #495057;
+    --on-hover: #e9ecef; 
 
     --font-rubik: "Rubik", sans-serif;
-    --li-height: 30px
+    --transition-value: all 250ms ease;
+}
+
+:root.dark {
+    --bg: #495057;
+    --button-bg: #343a40;
+    --font-color: #e9ecef;
+    --input-color: #dee2e6;
+    --on-hover: #6c757d; 
 }
 
 html {
@@ -83,13 +89,42 @@ body {
 }
 
 .check-box {
-    width: 1em;
-    height: 1em;
+    fill: var(--bg);
+    stroke: var(--button-bg);
+    stroke-width: 1;
+    width: 1.2em;
+    height: 1.2em;
+}
+
+input {
+    color: var(--input-color);
+    background-color: var(--bg);
+    position: relative;
+    font-size: 0.8em;
+    border: none;
+    outline: none;
+    font-weight: 500;
+}
+
+.check-box .tick {
+    stroke-width: 1;
+    stroke: none;
+    fill: var(--font-color);
+
+}
+
+.theme-switcher {
+    width: 3rem;
+    height: 3rem;
+    bottom: 2rem;
+    right: 2rem;
+    position: fixed;
+    cursor: pointer;
 }
 
 li:hover :last-child,
 li:hover {
-    background-color: var(--nav-color);
+    background-color: var(--on-hover);
 }
 
 li:hover .cross {
@@ -145,6 +180,27 @@ input {
     top: 80%;
     cursor: pointer;
     z-index: 2;
+}
+
+.add-task-button.click {
+    transform: translate3d(-0.02rem, 0.1rem, 0);
+    width: 4.8rem;
+    height: 4.8rem;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+}
+
+.add-task-button:hover {
+    background-color: var(--on-button-hover);
+}
+
+li, input,
+.add-task-button {
+    transition: var(--transition-value);
+}
+
+li:hover,
+li:hover input {
+    background-color: var(--on-hover);
 }
 
 .add-task-button :first-child {
