@@ -70,7 +70,12 @@ or replace with an existing .task-container element if the map has the new date 
         this.dateBar.onclick = event => {
             this.changeDate(event);
         };
+
         this.themeSwitcher.onclick = () => {
+
+            document.documentElement.style.setProperty('--transition-value', '0ms');
+            /* reset --transition-value of :root in order to avoid it while switching the theme */
+
             if (this.sunIcon.style.display == 'none') {
                 this.moonIcon.style.display = 'none';
                 this.sunIcon.style.display = '';
@@ -80,6 +85,9 @@ or replace with an existing .task-container element if the map has the new date 
             }
 
             document.documentElement.classList.toggle('dark');
+            setTimeout(() => {
+                document.documentElement.style.setProperty('--transition-value', 'all 250ms ease');
+            });
         };
     };
 

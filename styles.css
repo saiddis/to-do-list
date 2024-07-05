@@ -1,28 +1,22 @@
 :root {
     --bg: #f8f9fa;
+    --input-hover-color: #e9ecef; 
+    --button-hover-color: #ced4da;
     --button-bg: #dee2e6;
     --font-color: #343a40;
-    --input-color: #495057;
-    --on-hover: #e9ecef; 
+    --input-text-color: #495057;
 
     --font-rubik: "Rubik", sans-serif;
     --transition-value: all 250ms ease;
 }
 
 :root.dark {
-    --bg: #495057;
-    --button-bg: #343a40;
+    --bg: #212529;
+    --input-hover-color: #343a40; 
+    --button-hover-color: #495057;
+    --button-bg: #6c757d;
     --font-color: #e9ecef;
-    --input-color: #dee2e6;
-    --on-hover: #6c757d; 
-}
-
-:root.dark {
-    --bg: #495057;
-    --button-bg: #343a40;
-    --font-color: #e9ecef;
-    --input-color: #dee2e6;
-    --on-hover: #6c757d; 
+    --input-text-color: #dee2e6;
 }
 
 html {
@@ -130,7 +124,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 input {
-    color: var(--input-color);
+    color: var(--input-text-color);
     background-color: var(--bg);
     position: relative;
     font-size: 0.8em;
@@ -157,7 +151,7 @@ input {
 
 li:hover :last-child,
 li:hover {
-    background-color: var(--on-hover);
+    background-color: var(--input-hover-color);
 }
 
 li:hover .cross {
@@ -178,7 +172,6 @@ li:hover .cross {
     bottom: 4rem;
     border: none;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
-    /* 0 3px 10px 0 rgba(0, 0, 0, 0.19); */
     border-radius: 50%;
     cursor: pointer;
     z-index: 2;
@@ -192,7 +185,7 @@ li:hover .cross {
 }
 
 .add-task-button:hover {
-    background-color: var(--on-button-hover);
+    background-color: var(--button-hover-color);
 }
 
 li, input,
@@ -202,7 +195,7 @@ li, input,
 
 li:hover,
 li:hover input {
-    background-color: var(--on-hover);
+    background-color: var(--input-hover-color);
 }
 
 .add-task-button :first-child {
